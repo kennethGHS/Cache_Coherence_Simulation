@@ -29,6 +29,7 @@ public class CacheBlock {
     public CacheBlock(int memorySize, int placeX, int placeY) {
         this.counterSinceAccessed = 0;
         this.tag = "0";
+        this.i=1;
         this.memoryBits = new BitSet(memorySize);
         this.memorySize = memorySize;
         this.blockContainer = ComponentFactory.createRectangle(50, 120, placeX, placeY, 2);
@@ -45,7 +46,6 @@ public class CacheBlock {
                 "S:" + s);
         this.textI = ComponentFactory.createText(10, placeX + 12, placeY + 90,
                 "I:" + i);
-
     }
 
     public int getCounterSinceAccessed() {
@@ -57,8 +57,9 @@ public class CacheBlock {
     }
 
     public void increaseCounterSinceAccessed() {
-        this.counterSinceAccessed+=1;
+        this.counterSinceAccessed += 1;
     }
+
     public void setTag(String tag) {
         this.tag = tag;
     }
@@ -146,6 +147,7 @@ public class CacheBlock {
         this.setI(0);
         this.setS(0);
     }
+
     public synchronized void setShared() {
         this.setM(0);
         this.setO(0);
@@ -154,6 +156,7 @@ public class CacheBlock {
         this.setS(1
         );
     }
+
     public synchronized int getState() {
         if (this.m == 1) {
             return 0;

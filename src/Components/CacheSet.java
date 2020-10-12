@@ -82,6 +82,11 @@ public class CacheSet {
         }
     }
 
+    /**
+     * Actualiza el estado de un bloque, 0 para modificado, 1 para exclusivo, 2 para shared y 3 para invalidar
+     * @param block cual bloque
+     * @param mode cual modo,
+     */
     public void updateStateBlock(int block, int mode) {
         CacheBlock toModify;
         if (block == 0) {
@@ -98,6 +103,22 @@ public class CacheSet {
                 toModify.setShared();
             case 3:
                 toModify.invalidate();
+        }
+    }
+    public BitSet readBlock(int block){
+        if (block==0){
+            return block1.getMemoryBits();
+        }
+        else {
+            return block2.getMemoryBits();
+        }
+    }
+    public int getsStateBlock(int block){
+        if (block==0){
+            return block1.getState();
+        }
+        else {
+            return block2.getState();
         }
     }
 }

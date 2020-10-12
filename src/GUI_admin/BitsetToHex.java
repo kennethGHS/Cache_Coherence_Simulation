@@ -40,13 +40,13 @@ public class BitsetToHex {
     }
 
     public static String bitToHex(BitSet bits, int size) {
-        if (size == 0){
+        if (size == 0) {
             return "0";
         }
         if (size % 4 != 0) {
             size = size + (4 - size % 4);
         }
-        String lines = grtBitString(bits,size);
+        String lines = grtBitString(bits, size);
         int len = lines.length();
         int i = 0;
         ArrayList<String> halfByte = new ArrayList<>();
@@ -101,9 +101,83 @@ public class BitsetToHex {
                 return "E";
             case "1111":
                 return "F";
-
         }
         return null;
     }
 
+    //    public String getHexBit(String dir){
+//        char lastHex= dir.charAt(dir.length()-1);
+//        switch (lastHex){
+//            case '0' :
+//                return "0000";
+//            case '1':
+//                return "0001";
+//            case '2':
+//                return "2";
+//            case '3':
+//                return "3";
+//            case '4':
+//                return "4";
+//            case '5':
+//                return "5";
+//            case '6':
+//                return "6";
+//            case '7':
+//                return "7";
+//            case '8':
+//                return "8";
+//            case '9':
+//                return "9";
+//            case 'A':
+//                return "A";
+//            case "1011":
+//                return "B";
+//            case "1100":
+//                return "C";
+//            case "1101":
+//                return "D";
+//            case "1110":
+//                return "E";
+//            case "1111":
+//                return "F";
+//        }
+//    }
+    public static String getHexBit(char hex) {
+        switch (hex) {
+            case '0' :
+                return "0000";
+            case '1' :
+                return "0001";
+            case '2' :
+                return "0010";
+            case '3' :
+                return "0011";
+            case '4' :
+                return "0100";
+            case '5' :
+                return "0101";
+            case '6' :
+                return "0110";
+            case '7' :
+                return "0111";
+            case '8' :
+                return "1000";
+            case '9' :
+                return "1001";
+            case 'A' :
+                return "1010";
+            case 'B' :
+                return "1011";
+            case 'C' :
+                return "1100";
+            case 'D' :
+                return "1101";
+            case 'E' :
+                return "1110";
+            case 'F' :
+                return "1111";
+            default:
+                return null;
+        }
+    }
 }
