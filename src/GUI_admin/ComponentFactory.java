@@ -4,6 +4,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -22,21 +23,38 @@ public class ComponentFactory {
         switch (color) {
             case 0:
                 rectangle.setFill(Color.LIGHTBLUE);
+                break;
             case 1:
                 rectangle.setFill(Color.LIGHTGRAY);
+                break;
+
             case 2:
                 rectangle.setFill(Color.LIGHTGREEN);
+                break;
+
             case 3:
                 rectangle.setFill(Color.LIGHTCORAL);
+                break;
+
             case 4:
-                rectangle.setFill(Color.LIGHTYELLOW);
+                rectangle.setFill(Color.LIGHTSALMON);
+                break;
+
             case 5:
                 rectangle.setFill(Color.LIGHTSEAGREEN);
+                break;
+
             case 6:
                 rectangle.setFill(Color.LIGHTCYAN);
+                break;
+
             case 7:
                 rectangle.setFill(Color.OLIVE);
+                break;
+
         }
+        rectangle.setStrokeType(StrokeType.OUTSIDE);
+        rectangle.setStroke(Color.GRAY);
         GUIUpdater.addComponent(rectangle);
         return rectangle;
     }

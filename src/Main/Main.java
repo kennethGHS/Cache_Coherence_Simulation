@@ -1,10 +1,9 @@
 package Main;
-import Components.Cache;
-import Components.CacheBlock;
-import Components.CacheSet;
-import Components.MemoryBlock;
+
+import Components.*;
 import GUI_admin.BasicComponents;
 import GUI_admin.BitsetToHex;
+import GUI_admin.ComponentFactory;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -12,30 +11,31 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
+
 import java.awt.*;
 import java.util.BitSet;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Hello World");
         //Setting the properties of the rectangle
         System.out.println(Font.getFamilies());
         BasicComponents.initWindow(root);
         primaryStage.setScene(BasicComponents.mainParent);
-//        CacheSet cache= new CacheSet(50,50,16);
-        Cache cache = new Cache(16,50,50);
-        cache.changeBlockState("01",0,2);
-        BitSet bits = new BitSet(16);
-        bits.set(0);
-        bits.set(15);
-        cache.setValue("01",1,bits);
-        System.out.print(BitsetToHex.bitToHex(cache.readValue("00",1),16));
+
 //        CacheSet set = new CacheSet(50,300,16);
 //        CacheBlock cacheBlock = new CacheBlock(16,400,200);
         primaryStage.show();
+        Memory memory = new Memory(400,900,16,16);
+        CPU cpu = new CPU(200, 200, 16);
+        CPU cpu2 = new CPU(600, 200, 16);
+        CPU cpu3 = new CPU(1000, 200, 16);
+        CPU cpu4 = new CPU(1400, 200, 16);
+        Bus.initBusHandlers(4,200,700);
+
     }
 
 
