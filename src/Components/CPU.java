@@ -19,9 +19,10 @@ public class CPU {
     public int thisCPUNumber;
     public Text instructionMemoryText;
     public  CPU(int X,int Y,int cacheMemorySize){
-        fetchInstruction = new FetchInstruction(X,Y-50);
+        fetchInstruction = new FetchInstruction(X,Y-50,4);
         rectangle = ComponentFactory.createRectangle(300,300,X,Y,1);
         this.cache = new Cache(cacheMemorySize,X+170,Y+20);
+        Bus.cacheList.add(this.cache);
         this.instructionText = ComponentFactory.createText(12,X+10,Y+30,"Instruction: None");
         this.instructionMemoryText = ComponentFactory.createText(12,X+10,Y+60,"Dir: None");
         this.available = true;
@@ -29,6 +30,7 @@ public class CPU {
         currentDirectionInstruction = "";
         cyclesToAvailable=0;
         this.thisCPUNumber = CPU.cpuNumber;
+        CPU.cpuNumber+=1;
 
     }
     public static synchronized CPU createCPU(int X, int Y, int cacheMemorySize){
@@ -45,6 +47,8 @@ public class CPU {
             this.cyclesToAvailable = 0;
             this.available = true;
             this.currentDirectionInstruction = "";
+            GUIUpdater.updateText(this.instructionText, "Instruction: "+name);
+
         }
         else {
             this.instructionName = name;

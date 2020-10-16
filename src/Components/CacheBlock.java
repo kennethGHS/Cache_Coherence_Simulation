@@ -13,7 +13,7 @@ public class CacheBlock {
     private int o;
     private int e;
     private int s;
-    private int i;
+    public int i;
     private BitSet memoryBits;
     private Text memoryValuesHex;
     private Text textM;
@@ -25,11 +25,12 @@ public class CacheBlock {
     private int memorySize;
     private String tag;
     public int counterSinceAccessed;
+    public int cyclesUsed = 0;
 
     public CacheBlock(int memorySize, int placeX, int placeY) {
         this.counterSinceAccessed = 0;
         this.tag = "0";
-        this.i=1;
+        this.i = 1;
         this.memoryBits = new BitSet(memorySize);
         this.memorySize = memorySize;
         this.blockContainer = ComponentFactory.createRectangle(50, 120, placeX, placeY, 2);

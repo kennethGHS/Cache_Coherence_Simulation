@@ -2,18 +2,15 @@ package Main;
 
 import Components.*;
 import GUI_admin.BasicComponents;
-import GUI_admin.BitsetToHex;
-import GUI_admin.ComponentFactory;
+import Threads.CPUThread;
+import Threads.RunTest;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
 
-import java.awt.*;
-import java.util.BitSet;
+import java.util.concurrent.CyclicBarrier;
 
 public class Main extends Application {
 
@@ -29,12 +26,17 @@ public class Main extends Application {
 //        CacheSet set = new CacheSet(50,300,16);
 //        CacheBlock cacheBlock = new CacheBlock(16,400,200);
         primaryStage.show();
-        Memory memory = new Memory(400,900,16,16);
-        CPU cpu = new CPU(200, 200, 16);
-        CPU cpu2 = new CPU(600, 200, 16);
-        CPU cpu3 = new CPU(1000, 200, 16);
-        CPU cpu4 = new CPU(1400, 200, 16);
-        Bus.initBusHandlers(4,200,700);
+        Thread thread = new Thread(new RunTest());
+        thread.start();
+
+
+//        Random rand = new Random();
+//        int i = 100;
+//        while (i!=0){
+//            System.out.println(rand.nextGaussian());
+//            i-=1;
+//        }
+
 
     }
 

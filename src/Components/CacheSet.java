@@ -13,7 +13,10 @@ public class CacheSet {
         X += 55;
         this.block2 = new CacheBlock(memorySize, X, Y);
     }
-
+    public void increaseClockBlock(){
+        this.block1.counterSinceAccessed +=1;
+        this.block2.counterSinceAccessed+=1;
+    }
     public int isHit(String tag) {
         if (block1.valueValid(tag)) {
             return 0;
@@ -26,9 +29,11 @@ public class CacheSet {
     public void modifyBlock(int block, BitSet values, String tag) {
         if (block == 0) {
             this.block1.setCounterSinceAccessed(0);
+            this.block1.counterSinceAccessed=0;
             this.block1.setTag(tag);
             this.block1.setMemoryBits(values);
         } else {
+            this.block2.counterSinceAccessed=0;
             this.block2.setCounterSinceAccessed(0);
             this.block2.setTag(tag);
             this.block2.setMemoryBits(values);
@@ -67,8 +72,10 @@ public class CacheSet {
 
     public void readRequestBus(int block) {
         if (block == 0) {
+            this.block1.counterSinceAccessed=0;
             this.block1.readRequestBus();
         } else {
+            this.block2.counterSinceAccessed=0;
             this.block2.readRequestBus();
         }
     }

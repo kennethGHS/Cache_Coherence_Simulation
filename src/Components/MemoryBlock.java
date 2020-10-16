@@ -7,6 +7,7 @@ import javafx.scene.text.Text;
 import javafx.scene.shape.Rectangle;
 
 import java.util.BitSet;
+import java.util.Random;
 
 public class MemoryBlock {
     private BitSet memoryBits;
@@ -15,7 +16,7 @@ public class MemoryBlock {
     private int memorySize;
 
     public MemoryBlock(int memorySize, int placeX, int placeY) {
-        this.memoryBits = new BitSet(memorySize);
+        this.memoryBits = createRandomBitset(memorySize);
         this.memorySize = memorySize;
         this.blockContainer = ComponentFactory.createRectangle(50, 50, placeX, placeY, 1);
         blockContainer.toFront();
@@ -23,7 +24,14 @@ public class MemoryBlock {
                 BitsetToHex.bitToHex(this.memoryBits, this.memorySize));
 
     }
-
+    public BitSet createRandomBitset(int memorySize) {
+        BitSet bitSet = new BitSet(memorySize);
+        Random random = new Random();
+        for (int i = 0; i < memorySize; i += 1) {
+            bitSet.set(i, random.nextBoolean());
+        }
+        return bitSet;
+    }
     public BitSet getMemoryBits() {
         return memoryBits;
     }
