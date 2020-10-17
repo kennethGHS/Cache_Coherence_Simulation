@@ -25,9 +25,21 @@ public class RunTest implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        for (int i = 0;i<30;i+=1){
         cpuThread.readyNextCycle();
         cpuThread2.readyNextCycle();
         cpuThread3.readyNextCycle();
         cpuThread4.readyNextCycle();
+        Bus.executeInvalidations();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+            cpuThread.executeActualInst();
+            cpuThread2.executeActualInst();
+            cpuThread3.executeActualInst();
+            cpuThread4.executeActualInst();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package GUI_admin;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -11,6 +12,7 @@ import javafx.scene.text.Text;
 
 public class GUIUpdater {
     public static void updateText(Text text,String newText){
+        System.out.println(newText);
         Runnable updater = new Runnable() {
 
             @Override
@@ -20,6 +22,15 @@ public class GUIUpdater {
         };
         Platform.runLater(updater);
 
+    }
+    public static void updateButtonText(String newText, Button button){
+        Runnable updater = new Runnable() {
+            @Override
+            public void run() {
+                button.setText(newText);
+            }
+        };
+        Platform.runLater(updater);
     }
     public static void updateRectangleColor(Rectangle rectangle,int color){
         Runnable updater = new Runnable() {

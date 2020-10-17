@@ -1,5 +1,6 @@
 package Components;
 
+import GUI_admin.BitsetToHex;
 import GUI_admin.ComponentFactory;
 
 import java.util.ArrayList;
@@ -19,15 +20,16 @@ public class Memory {
         }
     }
     public BitSet readInformation(String dirHex){
-        int dir = Integer.parseInt(dirHex);
+        int dir = BitsetToHex.getHexNum(dirHex.charAt(0));
         if (dir>=memoryBlocks.size()){
             return null;
         }
-        memoryBlocks.get(dir).getMemoryBits();
-     return null;
+
+     return memoryBlocks.get(dir).getMemoryBits();
     }
+
     public int modifyInformation(String dirHex,BitSet information){
-        int dir = Integer.parseInt(dirHex);
+        int dir = BitsetToHex.getHexNum(dirHex.charAt(0));
         if (dir>=memoryBlocks.size()){
             return -1;
         }

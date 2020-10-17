@@ -21,6 +21,7 @@ public class CacheBlock {
     private Text textE;
     private Text textS;
     private Text textI;
+    private Text textTag;
     private Rectangle blockContainer;
     private int memorySize;
     private String tag;
@@ -47,6 +48,8 @@ public class CacheBlock {
                 "S:" + s);
         this.textI = ComponentFactory.createText(10, placeX + 12, placeY + 90,
                 "I:" + i);
+        this.textTag = ComponentFactory.createText(10, placeX + 12, placeY + 105,
+                "Tag:" + this.textTag);
     }
 
     public int getCounterSinceAccessed() {
@@ -63,6 +66,7 @@ public class CacheBlock {
 
     public void setTag(String tag) {
         this.tag = tag;
+        GUIUpdater.updateText(this.textTag,"Tag: " + tag);
     }
 
     public BitSet getMemoryBits() {
@@ -127,7 +131,7 @@ public class CacheBlock {
     public synchronized boolean valueValid(String tag) {
         if (this.i == 1) {
             return false;
-        } else if (this.tag == tag) {
+        } else if (this.tag.equals(tag)) {
             return true;
         }
         return false;
@@ -136,8 +140,8 @@ public class CacheBlock {
     public synchronized void setToExclusive() {
         this.setM(0);
         this.setO(0);
-        this.setE(0);
-        this.setI(1);
+        this.setE(1);
+        this.setI(0);
         this.setS(0);
     }
 
@@ -154,8 +158,16 @@ public class CacheBlock {
         this.setO(0);
         this.setE(0);
         this.setI(0);
-        this.setS(1
-        );
+        this.setS(1);
+    }
+
+    public synchronized void setOwned() {
+        System.out.println("Setting to owned");
+        this.setM(0);
+        this.setO(1);
+        this.setE(0);
+        this.setI(0);
+        this.setS(0);
     }
 
     public synchronized int getState() {

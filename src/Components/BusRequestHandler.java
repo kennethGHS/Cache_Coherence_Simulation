@@ -46,8 +46,12 @@ public class BusRequestHandler {
         GUIUpdater.updateText(this.dirHexSignal,"Signal Dir: None");
     }
     public void setMessage(String messageName, String dirHexSignalString) {
+        System.out.println("Setting message");
         this.dirHexSignalString = dirHexSignalString;
         this.signalNameString = messageName;
+
+        System.out.println(dirHexSignalString);
+        System.out.println(messageName);
         GUIUpdater.updateText(this.dirHexSignal, "Signal Dir:" + dirHexSignalString);
         GUIUpdater.updateText(this.signalName, "Signal: " + messageName);
     }

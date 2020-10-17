@@ -18,9 +18,9 @@ public class CacheSet {
         this.block2.counterSinceAccessed+=1;
     }
     public int isHit(String tag) {
-        if (block1.valueValid(tag)) {
+        if (block1.valueValid(tag) && block1.i==0) {
             return 0;
-        } else if (block2.valueValid(tag)) {
+        } else if (block2.valueValid(tag) && block2.i==0) {
             return 1;
         }
         return -1;
@@ -104,12 +104,32 @@ public class CacheSet {
         switch (mode) {
             case 0:
                 toModify.setToModified();
+                break;
             case 1:
                 toModify.setToExclusive();
+                break;
+
             case 2:
                 toModify.setShared();
+                break;
+
             case 3:
                 toModify.invalidate();
+                break;
+
+            case 4:
+                toModify.setOwned();
+                break;
+
+
+        }
+    }
+    public void setCacheTag(String tag,int block){
+        if (block==0){
+            block1.setTag(tag);
+        }
+        else {
+            block2.setTag(tag);
         }
     }
     public BitSet readBlock(int block){

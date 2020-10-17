@@ -3,10 +3,10 @@ package Components;
 import GUI_admin.BitsetToHex;
 import GUI_admin.ComponentFactory;
 import GUI_admin.GUIUpdater;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.text.Text;
 
-import java.util.BitSet;
-import java.util.Random;
+import java.util.*;
 
 public class FetchInstruction {
     public Text instruction;
@@ -23,6 +23,12 @@ public class FetchInstruction {
         String[] nameAndDirection = this.instructionStrings;
         newInstruction(this.memorySizes);
         return nameAndDirection;
+
+    }
+
+    public void setInstructionStrings(String[] instructionStrings) {
+        this.instructionStrings = instructionStrings;
+        GUIUpdater.updateText(this.instruction, "Instruction: " + instructionStrings[0] + " " + instructionStrings[1]);
 
     }
 

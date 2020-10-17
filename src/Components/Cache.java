@@ -34,8 +34,11 @@ public class Cache {
         }
         if (binaryRep.charAt(binaryRep.length() - 1) == '0') {
             set1.modifyDataBlock(block, values);
+            set1.setCacheTag(dir,block);
         } else {
             set2.modifyDataBlock(block, values);
+            set2.setCacheTag(dir,block);
+
         }
     }
 
@@ -46,10 +49,10 @@ public class Cache {
         }
         if (binaryRep.charAt(binaryRep.length() - 1) == '0') {
             binaryRep = binaryRep.substring(0, binaryRep.length() - 1);
-            return set1.isHit(binaryRep);
+            return set1.isHit(dir);
         } else {
             binaryRep = binaryRep.substring(0, binaryRep.length() - 1);
-            return set2.isHit(binaryRep);
+            return set2.isHit(dir);
         }
     }
 

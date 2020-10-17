@@ -53,7 +53,7 @@ public class CPU {
         else {
             this.instructionName = name;
             this.currentInsIsMemory = true;
-            this.cyclesToAvailable = 3;
+            this.cyclesToAvailable = 0;
             this.available = false;
             this.currentDirectionInstruction = memory;
             GUIUpdater.updateText(this.instructionText, "Instruction: "+name);
