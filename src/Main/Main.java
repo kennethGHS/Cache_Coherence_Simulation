@@ -28,6 +28,9 @@ public class Main extends Application {
 //        CacheSet set = new CacheSet(50,300,16);
 //        CacheBlock cacheBlock = new CacheBlock(16,400,200);
         MasterThread masterThread = new MasterThread();
+        Thread thread = new Thread(masterThread);
+        thread.setDaemon(true);
+        thread.start();
         primaryStage.show();
 //        Thread thread = new Thread(new RunTest());
 //        thread.start();

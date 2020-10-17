@@ -42,7 +42,6 @@ public class CPUThread implements Runnable {
         System.out.println("Ejecutando instruccion actual:" + handler.signalNameString );
         if (handler.signalNameString!=null){
             if (handler.signalNameString == "WMISS"){
-                cpuToExecute.cyclesToAvailable+=3;
                 procWMISSActual(handler);
             }
             if (handler.signalNameString=="WHIT"){
@@ -84,6 +83,9 @@ public class CPUThread implements Runnable {
     int state = cpuToExecute.cache.getMatchingBlockState(handler.dirHexSignalString,block);
     boolean bool = Bus.isSharedCacheBlock(cpuToExecute.thisCPUNumber,handler.dirHexSignalString);
     System.out.println("Miss error con shared :" +bool );
+    if (handler.invalidated){
+        return;
+    }
     if(bool){
         Cache cacheToRead = Bus.isInOtherCache(cpuToExecute.thisCPUNumber,handler.dirHexSignalString);
         int blockToRead = cacheToRead.getBlockHit(handler.dirHexSignalString);
@@ -102,7 +104,6 @@ public class CPUThread implements Runnable {
     }
     else {
         System.out.println("Deberia estar aqui:");
-        cpuToExecute.cyclesToAvailable+=3;
         cpuToExecute.cache.setValue(handler.dirHexSignalString, block,memoryRead);
         cpuToExecute.cache.changeBlockState(handler.dirHexSignalString, block,1);
     }
@@ -178,12 +179,9 @@ public class CPUThread implements Runnable {
         int hit = cpuToExecute.cache.getBlockHit(instruction[1]);
         System.out.println("Este es el num hit " + hit);
         if (hit < 0) {
-            System.out.println("WMISS EN ESYTO");
             BusRequestHandler handler = Bus.busRequestHandlerList.get(cpuToExecute.thisCPUNumber);
             handler.setMessage("WMISS", instruction[1]);
-            System.out.println("VERIFICAR");
-            System.out.println(Bus.busRequestHandlerList.get(cpuToExecute.thisCPUNumber).signalNameString);
-//            cpuToExecute.cyclesToAvailable=2;
+            cpuToExecute.cyclesToAvailable=2;
         } else {
             BusRequestHandler handler = Bus.busRequestHandlerList.get(cpuToExecute.thisCPUNumber);
             handler.setMessage("WHIT", instruction[1]);
@@ -195,6 +193,10 @@ public class CPUThread implements Runnable {
         if (hit < 0) {
             BusRequestHandler handler = Bus.busRequestHandlerList.get(cpuToExecute.thisCPUNumber);
             handler.setMessage("RMISS", instruction[1]);
+            if(!Bus.isSharedCacheBlock(cpuToExecute.thisCPUNumber,instruction[1])){
+                cpuToExecute.cyclesToAvailable+=2;
+            }
+
         } else {
             BusRequestHandler handler = Bus.busRequestHandlerList.get(cpuToExecute.thisCPUNumber);
             handler.setMessage("RHIT", instruction[1]);
