@@ -122,27 +122,34 @@ public class CPUThread implements Runnable {
             return;
         }
         else {
-            BitSet bitSet = createRandomBitset(16);
+            Bus.executeInvalidations();
+            BitSet bitSet = cpuToExecute.fetchInstruction.data;
             int block = cpuToExecute.cache.getBlockHit(handler.dirHexSignalString);
+            memory.modifyInformation(handler.dirHexSignalString,bitSet);
             cpuToExecute.cache.setValue(handler.dirHexSignalString,block,bitSet);
             handlerStateWHITActual(handler,block);
         }
     }
 
     private void handlerStateWHITActual(BusRequestHandler handler, int block) {
+        Bus.invalidateMessages(handler.dirHexSignalString,handler);
+        Bus.executeInvalidations();
         cpuToExecute.cache.changeBlockState(handler.dirHexSignalString,block,0);
+
+
     }
 
     private void procWMISSActual(BusRequestHandler handler) {
-        System.out.println("PROCESANDO WMISS XD");
         if (handler.invalidated){
             return;
         }
         else{
-            BitSet bitSet = createRandomBitset(16);
+            Bus.invalidateMessages(handler.dirHexSignalString,handler);
+            BitSet bitSet = cpuToExecute.fetchInstruction.data;
             memory.modifyInformation(handler.dirHexSignalString,bitSet);
             int block =cpuToExecute.cache.getBlockToWrite(handler.dirHexSignalString);
             cpuToExecute.cache.setValue(handler.dirHexSignalString,block,bitSet);
+
             handlerStateWMISSActual(handler,block);
         }
         
@@ -203,7 +210,7 @@ public class CPUThread implements Runnable {
         }
     }
 
-    public BitSet createRandomBitset(int memorySize) {
+    public  static BitSet createRandomBitset(int memorySize) {
         BitSet bitSet = new BitSet(memorySize);
         Random random = new Random();
         for (int i = 0; i < memorySize; i += 1) {

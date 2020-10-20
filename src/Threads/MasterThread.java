@@ -7,6 +7,7 @@ import GUI_admin.BasicComponents;
 import GUI_admin.GUIUpdater;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.TextInputDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +26,16 @@ public class MasterThread implements Runnable {
     Button button;
     Button button2;
     Button button3;
+    Button button4;
+    Button button5;
+    Button button6;
+    int cyclesMaxV;
 
     public MasterThread() {
         this.automatic = false;
         execute = false;
         this.pause = true;
+        cyclesMaxV=0;
         memory = new Memory(400, 900, 16, 16);
         cpu = new CPU(200, 200, 16);
         cpu1 = new CPU(600, 200, 16);
@@ -37,36 +43,56 @@ public class MasterThread implements Runnable {
         cpu3 = new CPU(1400, 200, 16);
         Bus.initBusHandlers(4, 200, 700);
         button = new Button("Pause");
+        button.setLayoutX(110);
+        button.setLayoutY(20);
         button.setOnAction(value -> {
-            if (pause) {
-
-                automatic = true;
-                pause = false;
-                GUIUpdater.updateButtonText("Automatic", button);
-            } else if (automatic) {
-                automatic = false;
-                GUIUpdater.updateButtonText("Manual", button);
-
-            } else if (!automatic && !pause) {
-                GUIUpdater.updateButtonText("Pause", button);
-                pause = true;
-            }
+            pause = true;
+            automatic = false;
+            execute = false;
         });
-        button2 = new Button("Edit Instruction");
+        button2 = new Button("Edit");
         button2.setLayoutX(10);
         button2.setLayoutY(20);
-        button.setLayoutX(100);
-        button.setLayoutY(20);
         button2.setOnAction(value -> {
             callWindowInfo();
         });
         button3 = new Button("Clock");
-        button3.setLayoutX(300);
+        button3.setLayoutX(210);
         button3.setLayoutY(20);
         button3.setOnAction(value -> {
             this.execute = true;
         });
-        BasicComponents.root.getChildren().addAll(button, button2, button3);
+        button4 = new Button("Execute N cycles");
+        button4.setLayoutX(310);
+        button4.setLayoutY(20);
+
+        button4.setOnAction(value -> {
+            pause = true;
+            automatic = false;
+            execute = false;
+            TextInputDialog dialog = new TextInputDialog("0");
+            dialog.setTitle("Cycles");
+            dialog.setHeaderText("Enter quantity of cycles");
+            dialog.setContentText("Please enter your Integer");
+// Traditional way to get the response value.
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent()){
+                try {
+                    this.cyclesMaxV = Integer.parseInt(result.get());
+                }catch (Exception e){
+                    System.out.print("No era un numero");
+                }
+            }
+        });
+        button5 = new Button("Auto");
+        button5.setLayoutX(510);
+        button5.setLayoutY(20);
+        button5.setOnAction(value -> {
+            pause = false;
+            automatic = true;
+            execute = false;
+        });
+        BasicComponents.root.getChildren().addAll(button, button2, button3,button4,button5);
 
     }
 
@@ -77,11 +103,35 @@ public class MasterThread implements Runnable {
         CPUThread cpuThread3 = new CPUThread(cpu2, new CyclicBarrier(2), memory);
         CPUThread cpuThread4 = new CPUThread(cpu3, new CyclicBarrier(2), memory);
         while (true) {
-            System.out.println("Cycle");
+            while (cyclesMaxV!=0){
+                execute(cpuThread, cpuThread2, cpuThread3, cpuThread4);
+                cyclesMaxV-=1;
+            }
+            while (pause){
+                try {
+                    while (cyclesMaxV!=0){
+                        execute(cpuThread, cpuThread2, cpuThread3, cpuThread4);
+                        cyclesMaxV-=1;
+                    }
+                    if (execute){
+                        execute = false;
+                        execute(cpuThread, cpuThread2, cpuThread3, cpuThread4);
+                    }
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+//            System.out.print("");
             if (automatic) {
                 execute(cpuThread, cpuThread2, cpuThread3, cpuThread4);
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -239,6 +289,7 @@ public class MasterThread implements Runnable {
                     choices3.add("B");
                     choices3.add("C");
                     choices3.add("D");
+                    choices3.add("E");
                     choices3.add("F");
                     ChoiceDialog<String> dialog3 = new ChoiceDialog<>("0", choices3);
                     dialog3.setTitle("Choice");

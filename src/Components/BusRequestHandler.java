@@ -6,6 +6,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 
 public class BusRequestHandler {
 
@@ -21,6 +22,7 @@ public class BusRequestHandler {
     public boolean toMemory;
     public boolean hit;
     public boolean shared;
+    public BitSet data;
     public BusRequestHandler(int X, int Y, int procNumber) {
         this.hit = false;
         this.onHold = false;

@@ -20,12 +20,12 @@ public class Bus {
     }
 
     private static void releaseHoldedAccesses() {
-        for (BusRequestHandler handler:busRequestHandlerList){
+        for (BusRequestHandler handler : busRequestHandlerList) {
             handler.release();
-            for (BusRequestHandler handler1:busRequestHandlerList){
-                if (!handler1.equals(handler)){
-                    if (handler1.signalNameString == "WMISS" && handler1.signalNameString== "WHIT"){
-                        if(handler1.dirHexSignalString==handler.dirHexSignalString){
+            for (BusRequestHandler handler1 : busRequestHandlerList) {
+                if (!handler1.equals(handler)) {
+                    if (handler1.signalNameString == "WMISS" && handler1.signalNameString == "WHIT") {
+                        if (handler1.dirHexSignalString == handler.dirHexSignalString) {
                             handler.setOnUse();
                         }
                     }
@@ -41,9 +41,8 @@ public class Bus {
                 if (handler.signalNameString == "WHIT") {
                     invalidateMessages(handler.dirHexSignalString, handler);
                     //Aqui se evita el mensaje a los otros caches de invalidacion
-                    if(!isSharedCacheBlock(i,handler.dirHexSignalString)) {
-                        invalidateSharedCacheBlocks(i, handler.dirHexSignalString);
-                    }
+                    invalidateSharedCacheBlocks(i, handler.dirHexSignalString);
+
                 }
                 //Se hacen las mismas invalidaciones
                 if (handler.signalNameString == "WMISS") {
@@ -52,7 +51,7 @@ public class Bus {
                     handler.toMemory = true;
                 }
                 if (handler.signalNameString == "RMISS") {
-                    if (isSharedCacheBlock(i, handler.dirHexSignalString)){
+                    if (isSharedCacheBlock(i, handler.dirHexSignalString)) {
                         handler.toMemory = true;
                     }
                 }
@@ -62,14 +61,13 @@ public class Bus {
 
     }
 
-    public static  synchronized void invalidateMessages(String directions, BusRequestHandler owner) {
+    public static synchronized void invalidateMessages(String directions, BusRequestHandler owner) {
         for (BusRequestHandler handler : busRequestHandlerList) {
             if (handler.dirHexSignalString == directions && !owner.equals(handler)) {
-                if (handler.signalNameString=="RHIT"|| handler.signalNameString=="RMISS"){
+                if (handler.signalNameString == "RHIT" || handler.signalNameString == "RMISS") {
                     handler.setOnUse();
-                }
-                else 
-                handler.invalidate();
+                } else
+                    handler.invalidate();
             }
         }
     }
@@ -88,11 +86,11 @@ public class Bus {
 
     }
 
-    public static synchronized boolean isSharedCacheBlock(int jump,String dir) {
+    public static synchronized boolean isSharedCacheBlock(int jump, String dir) {
         int i = 0;
         for (Cache cache : cacheList) {
-            if (i!=jump) {
-                if (cache.getBlockHit(dir)>=0){
+            if (i != jump) {
+                if (cache.getBlockHit(dir) >= 0) {
                     return true;
                 }
             }
@@ -100,25 +98,27 @@ public class Bus {
         }
         return false;
     }
-    public static synchronized void setOthersToShared(int jump,String dir){
+
+    public static synchronized void setOthersToShared(int jump, String dir) {
         int i = 0;
         for (Cache cache : cacheList) {
-            if (i!=jump) {
+            if (i != jump) {
                 int cacheBlock = cache.getBlockHit(dir);
-                if (cacheBlock>=0){
-                    cache.changeBlockState(dir,cacheBlock,2);
+                if (cacheBlock >= 0) {
+                    cache.changeBlockState(dir, cacheBlock, 2);
                 }
             }
             i += 1;
         }
-        return ;
+        return;
     }
-    public static synchronized Cache isInOtherCache(int jump,String dir){
+
+    public static synchronized Cache isInOtherCache(int jump, String dir) {
         int i = 0;
         for (Cache cache : cacheList) {
-            if (i!=jump) {
+            if (i != jump) {
                 int cacheBlock = cache.getBlockHit(dir);
-                if (cacheBlock>=0){
+                if (cacheBlock >= 0) {
                     return cache;
                 }
             }
